@@ -1,7 +1,8 @@
+import { AuthController } from './../controller/AuthController';
 /*
  * @Author: zhangyang
  * @Date: 2021-04-08 09:51:39
- * @LastEditTime: 2021-04-08 16:44:32
+ * @LastEditTime: 2021-07-09 09:45:36
  * @Description: 路由汇总
  */
 import KoaRouter from '@koa/router';
@@ -9,29 +10,36 @@ import { Context } from 'koa';
 import { readdirSync } from 'fs';
 import { Young_Route_Item } from './../@types/my-routes.d';
 import combineRouters from 'koa-combine-routers';
-
+import { respond } from '../controller/msgFormat';
 const router  = new KoaRouter();
-
-router.get('/', async (ctx: Context) => {
-  ctx.body = '来了老弟'
-});
-
-let allRoutes = [router];
+const controllerMap = new Map<string, Young_Route_Item>();
 
 readdirSync(__dirname)
   .filter((f) => f !== 'index.ts')
   .map((f) => require('./' + f))
-  ?.forEach(({ prefix = '/', router: youngRoutes } : { prefix: string, router: Young_Route_Item[] }) => {
-    const temp_router = new KoaRouter();
-    temp_router.prefix(prefix);
-    youngRoutes?.forEach(({ method, path, controller: Controller, action }) => {
-      // 必须使用异步函数的写法，否则会返回 404
-      temp_router[method](path, async (ctx: Context) => {
-        await (new Controller())[action](ctx);
-      });
+  ?.forEach(({ router: youngRoutes } : { router: Young_Route_Item[] }) => {
+    youngRoutes?.forEach((route) => {
+      // 路由注册
+      controllerMap.set(route.path, route)
     });
-
-    allRoutes.push(temp_router);
   });
-
-export default combineRouters(...allRoutes);
+router.post('/', async (ctx: Context) => {
+  const { com, task, aid } = ctx.request.body;
+  const _path = `${com}/${task}`;
+  const handler = controllerMap.get(_path);
+  if (handler) {
+    // 默认需要鉴权通过之后才能执行
+    if (!handler.no_auth) {
+      const res = await AuthController.hasPermission(aid, _path);
+      if (!res) {
+        respond(ctx, '权限不足，请联系管理员添加对应的权限', 'fail');
+        return;
+      }
+    }
+    await handler.handler(ctx);
+  } else {
+    respond(ctx, '无对应的服务', 'fail');
+    return;
+  }
+});
+export default combineRouters(router);

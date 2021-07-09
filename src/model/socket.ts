@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-04-09 14:10:41
- * @LastEditTime: 2021-07-08 17:30:01
+ * @LastEditTime: 2021-07-09 09:59:47
  * @Description: 管理 Websocket 消息
  */
 
@@ -10,13 +10,13 @@ import { PassThrough } from "stream";
 import WebSocket from "ws";
 import getHandler from '../routers/ws-handler';
 import AllController from '../controller';
-import { pushFormat } from "../controller/BaseController";
+import { pushFormat } from "../controller/msgFormat";
 import conf from "../../conf";
 import { myredis } from '../database/conn';
 
 const sleep = async (time: number) => {
 	return new Promise((resolve) => {
-		setTimeout(resolve, time * 1000);
+		setTimeout(resolve, time * 1000, '');
 	});
 };
 

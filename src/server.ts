@@ -1,12 +1,12 @@
 /*
  * @Author: zhangyang
  * @Date: 2020-09-23 08:58:47
- * @LastEditTime: 2021-06-29 11:01:13
+ * @LastEditTime: 2021-07-09 09:22:28
  * @Description: http 服务器启动配置
  */
 import Koa from 'koa';
 import cors from '@koa/cors';
-import koaBody from 'koa-bodyparser';
+import koaBody from 'koa-body';
 import helmet from 'koa-helmet';
 import staticFile from 'koa-static';
 import path from 'path';
@@ -18,13 +18,21 @@ import { myredis } from './database/conn';
 import logger from './middleware/logger';
 import { MySocket } from './model/socket';
 import { URLSearchParams } from 'url';
-import { pushFormat } from './controller/BaseController';
+import { pushFormat } from './controller/msgFormat';
 
 export const createApp = () => {
   const app = new Koa();
   const httpPort = conf.CONF_HTTP_PORT;
   // 数据解析
-  app.use(koaBody());
+  app.use(koaBody({
+    multipart: true, // 不设置这个无法解析 FormData 传递的参数
+    encoding: 'gzip',
+    formidable: {
+      uploadDir: path.join(__dirname, '../public/upload/'),
+      keepExtensions: true,
+      maxFieldsSize: 1024 * 1024 * 2
+    }
+  }));
   // 处理跨域
   app.use(cors());
   // 加入安全的响应头信息

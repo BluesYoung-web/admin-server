@@ -4,7 +4,7 @@
  * @LastEditTime: 2021-06-18 16:46:58
  * @Description: 错误收集
  */
-import { pushFormat } from "./BaseController";
+import { pushFormat } from "./msgFormat";
 import conf from '../../conf';
 export class ErrorController {
   static error() {
