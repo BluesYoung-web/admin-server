@@ -2,15 +2,17 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-04-08 11:02:48
- * @LastEditTime: 2021-07-09 09:14:45
+ * @LastEditTime: 2021-07-10 20:24:23
  * @Description: 处理登录
  */
-import { getRepository } from 'typeorm';
-import { User } from '../entity/User';
+import { getRepository, Not } from 'typeorm';
 import { Context } from 'koa';
 import { respond } from './msgFormat';
 import svgCaptcha from 'svg-captcha';
 import conf from '../../conf';
+import { User } from '../entity/User';
+import { Role } from '../entity/Role';
+import { Node } from '../entity/Node';
 import { UserMetaData } from '../entity/UserMetadata';
 import { myredis } from './../database/conn';
 
@@ -25,6 +27,9 @@ import { myredis } from './../database/conn';
 }
 
 export class LoginController {
+  /**
+   * 用户登录
+   */
   static async userLogin(ctx: Context) {
     const userRepository = getRepository(User);
     const md5 = require('md5');
@@ -44,6 +49,41 @@ export class LoginController {
       }
     } else {
       respond(ctx, '账号不存在', 'fail');
+    }
+  }
+  /**
+   * 退出登录
+   */
+  static async loginOut(ctx: Context) {
+    respond(ctx, '退出登录成功', 'success');
+  }
+  /**
+   * 获取用户对应的信息
+   */
+  static async getUserInfo(ctx: Context) {
+    const { com, task, aid } = ctx.request.body;
+    const userRepo = getRepository(User);
+    const roleRepo = getRepository(Role);
+    const nodeRepo = getRepository(Node);
+
+    const user = await userRepo.findOne({ where: { aid }, relations: ['metadata'] });
+    if (user) {
+      const role_id = user.metadata.role_id;
+
+      const role = await roleRepo.findOne({ where: { autoid: role_id } });
+      let nodes: Node[] = [];
+      if (role?.role_access === '*') {
+        nodes = await nodeRepo.find({ where: { autoid: Not(0) } });
+      } else {
+        const arr = (role?.role_access??'').split(',');
+        for (const n of arr) {
+          const node = await nodeRepo.findOne({ where: { autoid: n } });
+          node && nodes.push(node);
+        }
+      }
+      return respond(ctx, nodes, 'success');
+    } else {
+      return respond(ctx, '请联系管理员完善您的信息', 'fail');
     }
   }
 

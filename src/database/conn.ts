@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-04-09 13:38:07
- * @LastEditTime: 2021-04-24 19:23:11
+ * @LastEditTime: 2021-07-10 19:48:42
  * @Description: 初始化 redis 连接
  */
 import { createClient, RedisClient } from 'redis';
@@ -10,11 +10,11 @@ import conf from '../../conf';
 
 class MyRedis {
   private client: RedisClient;
-
+  createClient() {
+    this.client = createClient(conf.CONF_REDIS);
+  }
   async get(key: string) {
-    this.client = createClient({
-      host: conf.CONF_REDIS.host
-    });
+    this.createClient();
     return new Promise((resolve, reject) => {
       this.client.get(key, (err: Error, data: string) => {
         if (err) {
@@ -33,9 +33,7 @@ class MyRedis {
   }
 
   async set(key: string, value: any) {
-    this.client = createClient({
-      host: conf.CONF_REDIS.host
-    });
+    this.createClient();
     return new Promise((resolve, reject) => {
       if (typeof value === 'object') {
         value = JSON.stringify(value);
@@ -52,9 +50,7 @@ class MyRedis {
   }
 
   async del(key: string) {
-    this.client = createClient({
-      host: conf.CONF_REDIS.host
-    });
+    this.createClient();
     return new Promise((resolve, reject) => {
       this.client.del(key, (err: Error) => {
         if (err) {
