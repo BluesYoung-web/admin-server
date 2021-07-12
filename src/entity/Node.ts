@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-07-08 16:58:59
- * @LastEditTime: 2021-07-12 09:53:30
+ * @LastEditTime: 2021-07-12 11:57:32
  * @Description: 节点表
  */
 import { Column, Entity, OneToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
@@ -54,4 +54,9 @@ export class Node {
    */
   @OneToMany(() => Node, node => node.autoid)
   part?: Node[];
+
+  /**
+   * 仅用于角色列表选择标志
+   */
+  is_checked?: 0 | 1;
 }
