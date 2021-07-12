@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-07-08 16:58:59
- * @LastEditTime: 2021-07-08 17:33:09
+ * @LastEditTime: 2021-07-12 09:53:30
  * @Description: 节点表
  */
 import { Column, Entity, OneToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
@@ -43,7 +43,7 @@ export class Node {
    *  1 - 4
    */
   @Column({ default: 1 })
-  node_type: 1 | 2 | 3 | 4;
+  node_type: number;
   /**
    * 父节点 id
    */

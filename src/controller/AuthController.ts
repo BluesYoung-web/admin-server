@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-07-09 09:36:28
- * @LastEditTime: 2021-07-10 20:24:06
+ * @LastEditTime: 2021-07-12 10:58:53
  * @Description: 权限控制
  */
 import { getRepository, Not } from 'typeorm';
@@ -30,7 +30,6 @@ export class AuthController {
           node && nodes.push(node);
         }
       }
-      console.log(nodes);
       return nodes.some((node) => node.node_path === path);
     } else {
       return false;

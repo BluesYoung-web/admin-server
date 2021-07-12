@@ -2,7 +2,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-04-08 11:02:48
- * @LastEditTime: 2021-07-11 17:32:29
+ * @LastEditTime: 2021-07-12 10:34:06
  * @Description: 处理登录
  */
 import { getRepository } from 'typeorm';
@@ -15,6 +15,7 @@ import { Role } from '../entity/Role';
 import { Node } from '../entity/Node';
 import { UserMetaData } from '../entity/UserMetadata';
 import { myredis } from './../database/conn';
+import { YoungRoute } from '../decorators/YoungRoute';
 
 /**
  * 制作token的函数
@@ -30,11 +31,13 @@ export class LoginController {
   /**
    * 用户登录
    */
+  @YoungRoute('10000/1', true)
   static async userLogin(ctx: Context) {
     const userRepository = getRepository(User);
     const md5 = require('md5');
     const { login_name: username, login_code: passwd } = ctx.request.body;
-    const hasUser = await userRepository.findOne({ where: { admin_name: username }, relations: ['metadata'] });
+    // 用户名登录或者手机号登录
+    const hasUser = await userRepository.findOne({ where: [{ admin_name: username }, { phone_number: username }], relations: ['metadata'] });
 
     if (hasUser) {
       // 封号了
@@ -57,6 +60,7 @@ export class LoginController {
   /**
    * 退出登录
    */
+  @YoungRoute('10000/2', true)
   static async loginOut(ctx: Context) {
     // TODO 清除token
     respond(ctx, '退出登录成功', 'success');
@@ -64,6 +68,7 @@ export class LoginController {
   /**
    * 获取用户对应的信息
    */
+  @YoungRoute('10000/3', true)
   static async getUserInfo(ctx: Context) {
     const { aid } = ctx.request.body;
 
@@ -110,7 +115,7 @@ export class LoginController {
       res.role_name = role?.role_name??'';
       let nodes: Node[] = [];
       if (role?.role_access === '*') {
-        // 获取所有二级节点
+        // 获取所有一级节点
         nodes = await nodeRepo.createQueryBuilder('node')
           .select('node.autoid', 'autoid')
           .addSelect('node.is_show', 'is_show')
@@ -120,14 +125,13 @@ export class LoginController {
           .addSelect('node.node_sort', 'node_sort')
           .addSelect('node.node_type', 'node_type')
           .addSelect('node.parent_id', 'parent_id')
-          .where(`node.autoid != 0`)
-          .andWhere(`node.node_type = 2`)
+          .where(`node.node_type = 1`)
           .orderBy('node.node_sort', 'DESC')
           .getRawMany();
       } else {
         const arr = (role?.role_access??'').split(',');
         for (const n of arr) {
-          // 获取所有二级节点
+          // 获取所有一级节点
           const node = await nodeRepo.createQueryBuilder('node')
           .select('node.autoid', 'autoid')
           .addSelect('node.is_show', 'is_show')
@@ -138,14 +142,14 @@ export class LoginController {
           .addSelect('node.node_type', 'node_type')
           .addSelect('node.parent_id', 'parent_id')
           .where(`node.autoid = ${n}`)
-          .andWhere(`node.node_type = 2`)
+          .andWhere(`node.node_type = 1`)
           .orderBy('node.node_sort', 'DESC')
           .getRawOne();
           node && nodes.push(node);
         }
       }
       for (const node of nodes) {
-        // 获取所有三级节点
+        // 获取所有二级节点
         node.part = await nodeRepo.createQueryBuilder('node')
         .select('node.autoid', 'autoid')
         .addSelect('node.is_show', 'is_show')
@@ -156,11 +160,11 @@ export class LoginController {
         .addSelect('node.node_type', 'node_type')
         .addSelect('node.parent_id', 'parent_id')
         .where(`node.parent_id = ${node.autoid}`)
-        .andWhere(`node.node_type = 3`)
+        .andWhere(`node.node_type = 2`)
         .orderBy('node.node_sort', 'DESC')
         .getRawMany();
         for (const sub_node of node.part) {
-          // 获取所有四级节点(最多只到4级，4级节点一般用于控制具体权限)
+          // 获取所有三级节点(页面路由最多只到3级，4级节点一般用于控制具体权限)
           sub_node.part = await nodeRepo.createQueryBuilder('node')
           .select('node.autoid', 'autoid')
           .addSelect('node.is_show', 'is_show')
@@ -171,7 +175,7 @@ export class LoginController {
           .addSelect('node.node_type', 'node_type')
           .addSelect('node.parent_id', 'parent_id')
           .where(`node.parent_id = ${sub_node.autoid}`)
-          .andWhere(`node.node_type = 4`)
+          .andWhere(`node.node_type = 3`)
           .orderBy('node.node_sort', 'DESC')
           .getRawMany();
         }
@@ -185,6 +189,7 @@ export class LoginController {
   /**
    * 修改密码
    */
+  @YoungRoute('10000/4', true)
   static async modPasswd(ctx: Context) {
     const { aid, old_pass, pass } = ctx.request.body;
     if (old_pass === pass) {
