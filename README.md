@@ -12,11 +12,11 @@
 - [x] HTTP 服务器
 - [x] WebSocket 服务器
 - [x] 动态路由及控制器
-- [ ] post 登录返回 token
 
 ## 使用
 
 - node 版本： 16+
+- [对应的数据库文件](./orm_admin.sql)
 
 ```bash
 # 装依赖
