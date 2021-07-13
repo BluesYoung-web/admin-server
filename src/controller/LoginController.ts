@@ -2,7 +2,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-04-08 11:02:48
- * @LastEditTime: 2021-07-12 10:34:06
+ * @LastEditTime: 2021-07-13 12:05:29
  * @Description: 处理登录
  */
 import { getRepository } from 'typeorm';
@@ -128,11 +128,10 @@ export class LoginController {
           .where(`node.node_type = 1`)
           .orderBy('node.node_sort', 'DESC')
           .getRawMany();
-      } else {
-        const arr = (role?.role_access??'').split(',');
-        for (const n of arr) {
-          // 获取所有一级节点
-          const node = await nodeRepo.createQueryBuilder('node')
+        
+        for (const node of nodes) {
+          // 获取所有二级节点
+          node.part = await nodeRepo.createQueryBuilder('node')
           .select('node.autoid', 'autoid')
           .addSelect('node.is_show', 'is_show')
           .addSelect('node.node_desc', 'node_desc')
@@ -141,16 +140,31 @@ export class LoginController {
           .addSelect('node.node_sort', 'node_sort')
           .addSelect('node.node_type', 'node_type')
           .addSelect('node.parent_id', 'parent_id')
-          .where(`node.autoid = ${n}`)
-          .andWhere(`node.node_type = 1`)
+          .where(`node.parent_id = ${node.autoid}`)
+          .andWhere(`node.node_type = 2`)
           .orderBy('node.node_sort', 'DESC')
-          .getRawOne();
-          node && nodes.push(node);
+          .getRawMany();
+          for (const sub_node of node.part) {
+            // 获取所有三级节点(页面路由最多只到3级，4级节点一般用于控制具体权限)
+            sub_node.part = await nodeRepo.createQueryBuilder('node')
+            .select('node.autoid', 'autoid')
+            .addSelect('node.is_show', 'is_show')
+            .addSelect('node.node_desc', 'node_desc')
+            .addSelect('node.node_name', 'node_name')
+            .addSelect('node.node_path', 'node_path')
+            .addSelect('node.node_sort', 'node_sort')
+            .addSelect('node.node_type', 'node_type')
+            .addSelect('node.parent_id', 'parent_id')
+            .where(`node.parent_id = ${sub_node.autoid}`)
+            .andWhere(`node.node_type = 3`)
+            .orderBy('node.node_sort', 'DESC')
+            .getRawMany();
+          }
         }
-      }
-      for (const node of nodes) {
-        // 获取所有二级节点
-        node.part = await nodeRepo.createQueryBuilder('node')
+      } else {
+        const arr = (role?.role_access??'').split(',');
+        // 获取所有节点
+        const allNodes = await nodeRepo.createQueryBuilder('node')
         .select('node.autoid', 'autoid')
         .addSelect('node.is_show', 'is_show')
         .addSelect('node.node_desc', 'node_desc')
@@ -159,27 +173,26 @@ export class LoginController {
         .addSelect('node.node_sort', 'node_sort')
         .addSelect('node.node_type', 'node_type')
         .addSelect('node.parent_id', 'parent_id')
-        .where(`node.parent_id = ${node.autoid}`)
-        .andWhere(`node.node_type = 2`)
+        .where(`node.autoid IN (${arr})`)
         .orderBy('node.node_sort', 'DESC')
         .getRawMany();
-        for (const sub_node of node.part) {
-          // 获取所有三级节点(页面路由最多只到3级，4级节点一般用于控制具体权限)
-          sub_node.part = await nodeRepo.createQueryBuilder('node')
-          .select('node.autoid', 'autoid')
-          .addSelect('node.is_show', 'is_show')
-          .addSelect('node.node_desc', 'node_desc')
-          .addSelect('node.node_name', 'node_name')
-          .addSelect('node.node_path', 'node_path')
-          .addSelect('node.node_sort', 'node_sort')
-          .addSelect('node.node_type', 'node_type')
-          .addSelect('node.parent_id', 'parent_id')
-          .where(`node.parent_id = ${sub_node.autoid}`)
-          .andWhere(`node.node_type = 3`)
-          .orderBy('node.node_sort', 'DESC')
-          .getRawMany();
+        if (allNodes) {
+          const nodes_1 = allNodes.filter((node: Node) => +node.node_type === 1);
+          const nodes_2 = allNodes.filter((node: Node) => +node.node_type === 2);
+          const nodes_3 = allNodes.filter((node: Node) => +node.node_type === 3);
+          // 所有一级节点
+          nodes = nodes_1;
+          for (const node of nodes) {
+            // 获取所有二级节点
+            node.part = nodes_2.filter((n: any) => n.parent_id === node.autoid);
+            for (const sub_node of (node.part)) {
+              // 获取所有三级节点(页面路由最多只到3级，4级节点一般用于控制具体权限)
+              sub_node.part = nodes_3.filter((n: any) => n.parent_id === sub_node.autoid);
+            }
+          }
         }
       }
+      
       res.menuBar = nodes;
       return respond(ctx, res, 'success');
     } else {
