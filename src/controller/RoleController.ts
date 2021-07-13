@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-07-12 10:59:51
- * @LastEditTime: 2021-07-12 12:13:37
+ * @LastEditTime: 2021-07-13 10:24:40
  * @Description: 角色相关
  */
 import { getRepository } from 'typeorm';
@@ -172,5 +172,14 @@ export class RoleController {
     } else {
       respond(ctx, '角色不存在', 'fail');
     }
+  }
+  /**
+   * 获取所有启用状态的角色
+   */
+  @YoungRoute('10000/13')
+  static async getAllUseFullRole(ctx: Context) {
+    const roleRepo = getRepository(Role);
+    const roles = await roleRepo.find({ where: { is_enable: 1 } });
+    respond(ctx, roles, 'success');
   }
 }
