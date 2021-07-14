@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-04-08 09:51:39
- * @LastEditTime: 2021-07-12 10:47:00
+ * @LastEditTime: 2021-07-14 11:15:53
  * @Description: 路由汇总
  */
 import KoaRouter from '@koa/router';
@@ -12,20 +12,18 @@ import { AuthController } from './../controller/AuthController';
 import { controllerMap } from '../decorators/YoungRoute';
 const router  = new KoaRouter();
 router.post('/', async (ctx: Context) => {
-  const { com, task, aid } = ctx.request.body;
-  const _path = `${com}/${task}`;
-
-  const handler = controllerMap.get(_path);
+  const { com, task } = ctx.request.body;
+  const handler = controllerMap.get(`${com}/${task}`);
   if (handler) {
     // 默认需要鉴权通过之后才能执行
     if (!handler.no_auth) {
-      const res = await AuthController.hasPermission(aid, _path);
+      const res = await AuthController.hasPermission(ctx);
       if (!res) {
-        respond(ctx, '权限不足，请联系管理员添加对应的权限', 'fail');
         return;
       }
     }
     await handler.handler(ctx);
+    return;
   } else {
     respond(ctx, '无对应的服务', 'fail');
     return;

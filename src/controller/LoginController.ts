@@ -2,7 +2,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-04-08 11:02:48
- * @LastEditTime: 2021-07-13 12:05:29
+ * @LastEditTime: 2021-07-14 11:18:54
  * @Description: 处理登录
  */
 import { getRepository } from 'typeorm';
@@ -48,27 +48,34 @@ export class LoginController {
       // 用户存在，校验密码
       if (md5(passwd) === hasUser.passwd) {
         const token = makeToken();
-        await myredis.set(hasUser.aid + '_token', token);
+        // 无操作十分钟之后，token过期
+        await myredis.set(hasUser.aid + '_token', token, 60 * 10);
         respond(ctx, { token, aid: hasUser.aid }, 'success');
+        return;
       } else {
         respond(ctx, '账号或密码错误', 'fail');
+        return;
       }
     } else {
       respond(ctx, '账号不存在', 'fail');
+      return;
     }
   }
   /**
    * 退出登录
    */
-  @YoungRoute('10000/2', true)
+  @YoungRoute('10000/2')
   static async loginOut(ctx: Context) {
-    // TODO 清除token
+    const { aid } = ctx.request.body;
+    // 清除token
+    await myredis.del(`${aid}_token`);
     respond(ctx, '退出登录成功', 'success');
+    return;
   }
   /**
    * 获取用户对应的信息
    */
-  @YoungRoute('10000/3', true)
+  @YoungRoute('10000/3')
   static async getUserInfo(ctx: Context) {
     const { aid } = ctx.request.body;
 
@@ -194,10 +201,11 @@ export class LoginController {
       }
       
       res.menuBar = nodes;
-      return respond(ctx, res, 'success');
+      respond(ctx, res, 'success');
     } else {
-      return respond(ctx, '请联系管理员完善您的信息', 'fail');
+      respond(ctx, '请联系管理员完善您的信息', 'fail');
     }
+    return;
   }
   /**
    * 修改密码
@@ -223,6 +231,7 @@ export class LoginController {
     } else {
       respond(ctx, '用户不存在', 'fail');
     }
+    return;
   }
 
   static async getCaptcha(ctx: Context) {
@@ -237,6 +246,7 @@ export class LoginController {
       background: '#eee' // 验证码图片背景颜色
     });
     respond(ctx, cap, 'success');
+    return;
   }
 
 }
