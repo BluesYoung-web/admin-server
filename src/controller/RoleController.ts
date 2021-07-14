@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-07-12 10:59:51
- * @LastEditTime: 2021-07-13 10:24:40
+ * @LastEditTime: 2021-07-14 11:21:05
  * @Description: 角色相关
  */
 import { getRepository } from 'typeorm';
@@ -20,7 +20,8 @@ export class RoleController {
   static async getRoleList(ctx: Context) {
     const roleRepo = getRepository(Role);
     const roles = await roleRepo.find();
-    return respond(ctx, roles, 'success');
+    respond(ctx, roles, 'success');
+    return;
   }
   /**
    * 新建 | 编辑角色
@@ -61,6 +62,7 @@ export class RoleController {
       await roleRepo.save(role);
       respond(ctx, '新增成功', 'success');
     }
+    return;
   }
   /**
    * 删除角色
@@ -79,6 +81,7 @@ export class RoleController {
       error(err);
       respond(ctx, '删除失败', 'fail');
     }
+    return;
   }
   /**
    * 获取角色拥有权限的节点列表
@@ -172,6 +175,7 @@ export class RoleController {
     } else {
       respond(ctx, '角色不存在', 'fail');
     }
+    return;
   }
   /**
    * 获取所有启用状态的角色
@@ -181,5 +185,6 @@ export class RoleController {
     const roleRepo = getRepository(Role);
     const roles = await roleRepo.find({ where: { is_enable: 1 } });
     respond(ctx, roles, 'success');
+    return;
   }
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-07-12 09:10:45
- * @LastEditTime: 2021-07-12 10:29:26
+ * @LastEditTime: 2021-07-14 11:20:11
  * @Description: 节点相关
  */
 import { getRepository } from 'typeorm';
@@ -81,6 +81,7 @@ export class NodeController {
         }
       }
     respond(ctx, nodes, 'success');
+    return;
   }
   /**
    * 添加 | 修改节点
@@ -122,6 +123,7 @@ export class NodeController {
         respond(ctx, '新增失败', 'fail');
       }
     }
+    return;
   }
   /**
    * 删除节点
@@ -140,5 +142,6 @@ export class NodeController {
       error(err);
       respond(ctx, '删除失败', 'fail');
     }
+    return;
   }
 }

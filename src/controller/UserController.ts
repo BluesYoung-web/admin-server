@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-07-12 12:23:50
- * @LastEditTime: 2021-07-13 10:27:27
+ * @LastEditTime: 2021-07-14 11:21:55
  * @Description: 管理员相关
  */
 import { Context } from 'koa';
@@ -52,6 +52,7 @@ export class UserController {
   	  .limit(limit)
       .getRawMany();
     respond(ctx, { list: users, total }, 'success');
+    return;
   }
   /**
    * 新增 | 编辑管理员
@@ -109,6 +110,7 @@ export class UserController {
         respond(ctx, err, 'fail');
       }
     }
+    return;
   }
   /**
    * 删除管理员
@@ -127,5 +129,6 @@ export class UserController {
       error(err);
       respond(ctx, '删除失败', 'fail');
     }
+    return;
   }
 }
