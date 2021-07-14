@@ -4,7 +4,7 @@
   "description": "聊天APP的后台程序",
   "main": "main.ts",
   "scripts": {
-    "dev": "SET APP_ENV=dev &&nodemon --watch src -e ts,tsx --exec ts-node ./main.ts",
+    "dev": "cross-env APP_ENV=dev NODE_OPTIONS=--max_old_space_size=4096 nodemon --watch src -e ts,tsx --exec ts-node ./main.ts",
     "build": "tsc",
     "pre": "node ./dist/main.js"
   },
@@ -29,14 +29,14 @@
     "md5": "^2.3.0",
     "mysql": "^2.18.1",
     "nodemailer": "^6.6.2",
-    "nodemon": "^2.0.10",
+    "nodemon": "^2.0.12",
     "redis": "^3.1.2",
     "reflect-metadata": "^0.1.13",
     "sha1": "^1.1.1",
     "svg-captcha": "^1.4.0",
-    "ts-node": "^10.0.0",
+    "ts-node": "^10.1.0",
     "typeorm": "^0.2.34",
-    "ws": "^7.5.2"
+    "ws": "^7.5.3"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.4",
@@ -45,12 +45,13 @@
     "@types/koa-helmet": "^6.0.4",
     "@types/koa-static": "^4.0.2",
     "@types/koa__cors": "^3.0.3",
-    "@types/koa__router": "^8.0.6",
+    "@types/koa__router": "^8.0.7",
     "@types/mysql": "^2.15.19",
-    "@types/node": "^16.0.3",
+    "@types/node": "^16.3.2",
     "@types/nodemailer": "^6.4.4",
     "@types/redis": "^2.8.31",
     "@types/ws": "^7.4.6",
+    "cross-env": "^7.0.3",
     "typescript": "^4.3.5"
   }
 }
