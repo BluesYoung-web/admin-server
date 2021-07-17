@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-04-09 14:10:41
- * @LastEditTime: 2021-07-09 09:59:47
+ * @LastEditTime: 2021-07-17 20:04:44
  * @Description: 管理 Websocket 消息
  */
 
@@ -73,9 +73,7 @@ export class MySocket {
           this.fileType = 'audio';
         }
       } else {
-        const { Controller, handler } = getHandler(com, task, id);
-        // @ts-ignore
-        const res = await AllController[Controller][handler](params, this.uid, this);
+        const res = JSON.stringify({ cbk, data: params, extra });
         this.conn.send(res);
       }
     }

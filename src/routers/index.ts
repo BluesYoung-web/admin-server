@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-04-08 09:51:39
- * @LastEditTime: 2021-07-14 11:15:53
+ * @LastEditTime: 2021-07-17 20:12:23
  * @Description: 路由汇总
  */
 import KoaRouter from '@koa/router';
@@ -9,10 +9,12 @@ import { Context } from 'koa';
 import combineRouters from 'koa-combine-routers';
 import { respond } from '../controller/msgFormat';
 import { AuthController } from './../controller/AuthController';
+import AllController from '../controller';
 import { controllerMap } from '../decorators/YoungRoute';
 const router  = new KoaRouter();
 router.post('/', async (ctx: Context) => {
   const { com, task } = ctx.request.body;
+  AllController; // 仅为触发装饰器
   const handler = controllerMap.get(`${com}/${task}`);
   if (handler) {
     // 默认需要鉴权通过之后才能执行

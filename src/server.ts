@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2020-09-23 08:58:47
- * @LastEditTime: 2021-07-09 09:22:28
+ * @LastEditTime: 2021-07-17 19:44:14
  * @Description: http 服务器启动配置
  */
 import Koa from 'koa';
@@ -111,8 +111,8 @@ export const createWebSocket = () => {
     port: wsPort
   });
   ws.on('connection', async (socket, req) => {
-    const { uid, sign } = Object.fromEntries(Array.from(new URLSearchParams(req.url?.substr(1))));
-    tokenCheck(sign, uid, socket);
+    const { aid, sign } = Object.fromEntries(Array.from(new URLSearchParams(req.url?.substr(1))));
+    tokenCheck(sign, aid, socket);
   });
   console.log('websocket 服务已启动');
   console.log(`ws://localhost:${wsPort}`);
