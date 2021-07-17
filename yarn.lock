@@ -270,10 +270,10 @@
   resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-14.14.14.tgz?cache=0&sync_timestamp=1608047807699&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-14.14.14.tgz#f7fd5f3cc8521301119f63910f0fb965c7d761ae"
   integrity sha1-9/1fPMhSEwERn2ORDw+5ZcfXYa4=
 
-"@types/node@^16.3.2":
-  version "16.3.2"
-  resolved "https://registry.npmjs.org/@types/node/-/node-16.3.2.tgz#655432817f83b51ac869c2d51dd8305fb8342e16"
-  integrity sha512-jJs9ErFLP403I+hMLGnqDRWT0RYKSvArxuBVh2veudHV7ifEC1WAmjJADacZ7mRbA2nWgHtn8xyECMAot0SkAw==
+"@types/node@^16.3.3":
+  version "16.3.3"
+  resolved "https://registry.nlark.com/@types/node/download/@types/node-16.3.3.tgz#0c30adff37bbbc7a50eb9b58fae2a504d0d88038"
+  integrity sha1-DDCt/ze7vHpQ65tY+uKlBNDYgDg=
 
 "@types/nodemailer@^6.4.4":
   version "6.4.4"
