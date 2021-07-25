@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本机
+Source Server         : localhost_3306
 Source Server Version : 50726
 Source Host           : localhost:3306
 Source Database       : orm_admin
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2021-07-14 11:39:34
+Date: 2021-07-25 19:48:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,7 +31,7 @@ CREATE TABLE `node` (
   PRIMARY KEY (`autoid`),
   KEY `FK_3341dbe0417c4e6f7a41de5702a` (`parentIdAutoid`),
   CONSTRAINT `FK_3341dbe0417c4e6f7a41de5702a` FOREIGN KEY (`parentIdAutoid`) REFERENCES `node` (`autoid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of node

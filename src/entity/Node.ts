@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-07-08 16:58:59
- * @LastEditTime: 2021-07-12 11:57:32
+ * @LastEditTime: 2021-07-25 19:44:51
  * @Description: 节点表
  */
 import { Column, Entity, OneToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
@@ -47,7 +47,7 @@ export class Node {
   /**
    * 父节点 id
    */
-  @ManyToOne(() => Node, node => node.part)
+  @ManyToOne(() => Node, node => node.part || 0)
   parent_id?: Node;
   /**
    * 子节点
