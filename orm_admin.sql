@@ -31,12 +31,17 @@ CREATE TABLE `node` (
   PRIMARY KEY (`autoid`),
   KEY `FK_3341dbe0417c4e6f7a41de5702a` (`parentIdAutoid`),
   CONSTRAINT `FK_3341dbe0417c4e6f7a41de5702a` FOREIGN KEY (`parentIdAutoid`) REFERENCES `node` (`autoid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of node
 -- ----------------------------
-INSERT INTO `node` VALUES ('0', '0', '根节点', '', '', '0', '0', null);
+-- 
+-- 强制从零开始
+-- 
+INSERT INTO `node` VALUES ('-1', '0', '根节点', '', '', '0', '0', null);
+UPDATE `node` SET autoid = 0 WHERE autoid = -1;
+-- 
 INSERT INTO `node` VALUES ('1', '1', '系统管理', '系统管理', '', '-1', '1', '0');
 INSERT INTO `node` VALUES ('2', '1', '自定义组件', '常用组件', '', '-2', '1', '0');
 INSERT INTO `node` VALUES ('3', '1', '', 'VueUse使用示例', '', '-3', '1', '0');
@@ -59,10 +64,10 @@ INSERT INTO `node` VALUES ('22', '1', '富文本编辑器', '富文本编辑器'
 INSERT INTO `node` VALUES ('23', '1', 'useEventListener', 'useEventListener', '10000/20', '0', '2', '3');
 INSERT INTO `node` VALUES ('24', '1', '页面创建测试', '页面创建测试', '10000/21', '0', '2', '12');
 INSERT INTO `node` VALUES ('25', '0', '文件上传接口', '文件上传接口', '10000/22', '0', '3', '21');
-INSERT INTO `node` VALUES ('26', '0', '', '获取权限列表', '10000/3', '0', '2', '29');
-INSERT INTO `node` VALUES ('27', '0', '退出登录', '退出登录', '10000/2', '-1', '2', '29');
-INSERT INTO `node` VALUES ('28', '0', '修改密码', '修改密码', '10000/4', '-2', '2', '29');
-INSERT INTO `node` VALUES ('29', '0', 'base', 'base', '', '0', '1', '0');
+INSERT INTO `node` VALUES ('26', '0', 'base', 'base', '', '0', '1', '0');
+INSERT INTO `node` VALUES ('27', '0', '', '获取权限列表', '10000/3', '0', '2', '26');
+INSERT INTO `node` VALUES ('28', '0', '退出登录', '退出登录', '10000/2', '-1', '2', '26');
+INSERT INTO `node` VALUES ('29', '0', '修改密码', '修改密码', '10000/4', '-2', '2', '26');
 
 -- ----------------------------
 -- Table structure for role
@@ -98,8 +103,10 @@ CREATE TABLE `user` (
   `metadataAutoid` int(11) DEFAULT NULL,
   PRIMARY KEY (`aid`),
   UNIQUE KEY `IDX_81a16d17d501cba9be802fd26b` (`admin_name`),
-  UNIQUE KEY `REL_52f0a7932dddb6fdf30889c846` (`metadataAutoid`),
-  CONSTRAINT `FK_52f0a7932dddb6fdf30889c846d` FOREIGN KEY (`metadataAutoid`) REFERENCES `user_meta_data` (`autoid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  UNIQUE KEY `REL_52f0a7932dddb6fdf30889c846` (`metadataAutoid`)
+  -- ,
+  -- 仅为阻止 sql 执行报错，实际存在
+  -- CONSTRAINT `FK_52f0a7932dddb6fdf30889c846d` FOREIGN KEY (`metadataAutoid`) REFERENCES `user_meta_data` (`autoid`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
