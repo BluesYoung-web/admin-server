@@ -610,9 +610,9 @@ cli-boxes@^2.2.0:
   resolved "https://registry.npm.taobao.org/cli-boxes/download/cli-boxes-2.2.1.tgz?cache=0&sync_timestamp=1598866401325&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcli-boxes%2Fdownload%2Fcli-boxes-2.2.1.tgz#ddd5035d25094fce220e9cab40a45840a440318f"
   integrity sha1-3dUDXSUJT84iDpyrQKRYQKRAMY8=
 
-cli-highlight@^2.1.10:
+cli-highlight@^2.1.11:
   version "2.1.11"
-  resolved "https://registry.npmjs.org/cli-highlight/-/cli-highlight-2.1.11.tgz#49736fa452f0aaf4fae580e30acb26828d2dc1bf"
+  resolved "https://registry.yarnpkg.com/cli-highlight/-/cli-highlight-2.1.11.tgz#49736fa452f0aaf4fae580e30acb26828d2dc1bf"
   integrity sha512-9KDcoEVwyUXrjcJNvHD0NFc/hiwe/WPVYIleQh2O1N2Zro5gWJZ/K+3DGn8w8P/F6FxOgzyC5bxDyHIgCSPhGg==
   dependencies:
     chalk "^4.0.0"
@@ -2355,16 +2355,16 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typeorm@^0.2.34:
-  version "0.2.34"
-  resolved "https://registry.npmjs.org/typeorm/-/typeorm-0.2.34.tgz#637b3cec2de54ee7f423012b813a2022c0aacc8b"
-  integrity sha512-FZAeEGGdSGq7uTH3FWRQq67JjKu0mgANsSZ04j3kvDYNgy9KwBl/6RFgMVgiSgjf7Rqd7NrhC2KxVT7I80qf7w==
+typeorm@^0.2.35:
+  version "0.2.35"
+  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.2.35.tgz#bf6a8cda6e287af8fa662a490c4457e69a3b1752"
+  integrity sha512-vj4U8K1rlBW3N/3AkuEnjdawYp+yo3uw0OWK+5/E5tFuaofV9x3zWtLYKQngsEAZ7l/lLsN5fbz7MtBnwSPe8A==
   dependencies:
     "@sqltools/formatter" "^1.2.2"
     app-root-path "^3.0.0"
     buffer "^6.0.3"
     chalk "^4.1.0"
-    cli-highlight "^2.1.10"
+    cli-highlight "^2.1.11"
     debug "^4.3.1"
     dotenv "^8.2.0"
     glob "^7.1.6"
@@ -2483,10 +2483,10 @@ write-file-atomic@^3.0.0:
     signal-exit "^3.0.2"
     typedarray-to-buffer "^3.1.5"
 
-ws@^7.5.3:
-  version "7.5.3"
-  resolved "https://registry.npmjs.org/ws/-/ws-7.5.3.tgz#160835b63c7d97bfab418fc1b8a9fced2ac01a74"
-  integrity sha512-kQ/dHIzuLrS6Je9+uv81ueZomEwH0qVYstcAQ4/Z93K8zeko9gtAbttJWzoC5ukqXY1PpoouV3+VSOqEAFt5wg==
+ws@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.0.0.tgz#550605d13dfc1437c9ec1396975709c6d7ffc57d"
+  integrity sha512-6AcSIXpBlS0QvCVKk+3cWnWElLsA6SzC0lkQ43ciEglgXJXiCWK3/CGFEJ+Ybgp006CMibamAsqOlxE9s4AvYA==
 
 xdg-basedir@^4.0.0:
   version "4.0.0"

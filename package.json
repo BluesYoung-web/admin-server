@@ -35,8 +35,8 @@
     "sha1": "^1.1.1",
     "svg-captcha": "^1.4.0",
     "ts-node": "^10.1.0",
-    "typeorm": "^0.2.34",
-    "ws": "^7.5.3"
+    "typeorm": "^0.2.35",
+    "ws": "^8.0.0"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.4",
