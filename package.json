@@ -5,7 +5,7 @@
   "main": "main.ts",
   "scripts": {
     "dev": "cross-env APP_ENV=dev NODE_OPTIONS=--max_old_space_size=4096 nodemon --watch src -e ts,tsx --exec ts-node ./main.ts",
-    "build": "tsc",
+    "build": "tsc && ./deploy.sh",
     "pre": "node ./dist/main.js"
   },
   "keywords": [
