@@ -38,3 +38,7 @@ yarn build
 # 运行打包后的 js 文件
 yarn pre
 ```
+
+### Linux系统打包
+
+- 可能需要先给 `deploy.sh` 添加可执行权限 `sudo chmod a+x deploy.sh`

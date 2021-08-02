@@ -33,7 +33,7 @@ services:
     networks:
       web-net:
         ipv4_address: 172.18.0.3
-    command: /bin/bash -c "cd /home/node && node main.js"
+    command: /bin/bash -c "cd /home/node && yarn && node main.js"
   nginx-server:
     image: nginx
     ports: ['8080:80']
