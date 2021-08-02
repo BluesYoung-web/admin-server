@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2020-09-23 08:58:47
- * @LastEditTime: 2021-07-17 19:44:14
+ * @LastEditTime: 2021-08-02 11:09:50
  * @Description: http 服务器启动配置
  */
 import Koa from 'koa';
@@ -16,6 +16,7 @@ import conf from '../conf';
 import { myredis } from './database/conn';
 
 import logger from './middleware/logger';
+import auth from './middleware/auth';
 import { MySocket } from './model/socket';
 import { URLSearchParams } from 'url';
 import { pushFormat } from './controller/msgFormat';
@@ -23,7 +24,16 @@ import { pushFormat } from './controller/msgFormat';
 export const createApp = () => {
   const app = new Koa();
   const httpPort = conf.CONF_HTTP_PORT;
-  // 数据解析
+  // 处理跨域
+  app.use(cors());
+  // 加入安全的响应头信息
+  app.use(helmet());
+  // 记录日志
+  app.use(logger());
+  // 静态文件托管
+  app.use(staticFile(path.join(__dirname, '../public')));
+  
+  // 参数解析 + 文件上传
   app.use(koaBody({
     multipart: true, // 不设置这个无法解析 FormData 传递的参数
     encoding: 'gzip',
@@ -33,15 +43,9 @@ export const createApp = () => {
       maxFieldsSize: 1024 * 1024 * 2
     }
   }));
-  // 处理跨域
-  app.use(cors());
-  // 加入安全的响应头信息
-  app.use(helmet());
-  // 记录日志
-  app.use(logger());
-  // 静态文件托管
-  app.use(staticFile(path.join(__dirname, '../public')));
-
+  // 鉴权
+  app.use(auth());
+  // 路由
   app.use(router());
   app.listen(httpPort, () => {
     console.log('服务器运行中......');
