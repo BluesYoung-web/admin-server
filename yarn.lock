@@ -2361,10 +2361,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typeorm@^0.2.36:
-  version "0.2.36"
-  resolved "https://registry.nlark.com/typeorm/download/typeorm-0.2.36.tgz#02295462438b4f1279d26d15d32823c522ae1a04"
-  integrity sha1-AilUYkOLTxJ50m0V0ygjxSKuGgQ=
+typeorm@^0.2.37:
+  version "0.2.37"
+  resolved "https://registry.nlark.com/typeorm/download/typeorm-0.2.37.tgz#1a5e59216077640694d27c04c99ed3f968d15dc8"
+  integrity sha1-Gl5ZIWB3ZAaU0nwEyZ7T+WjRXcg=
   dependencies:
     "@sqltools/formatter" "^1.2.2"
     app-root-path "^3.0.0"
@@ -2489,10 +2489,10 @@ write-file-atomic@^3.0.0:
     signal-exit "^3.0.2"
     typedarray-to-buffer "^3.1.5"
 
-ws@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.0.0.tgz#550605d13dfc1437c9ec1396975709c6d7ffc57d"
-  integrity sha512-6AcSIXpBlS0QvCVKk+3cWnWElLsA6SzC0lkQ43ciEglgXJXiCWK3/CGFEJ+Ybgp006CMibamAsqOlxE9s4AvYA==
+ws@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.nlark.com/ws/download/ws-8.1.0.tgz#75e5ec608f66d3d3934ec6dbc4ebc8a34a68638c"
+  integrity sha1-deXsYI9m09OTTsbbxOvIo0poY4w=
 
 xdg-basedir@^4.0.0:
   version "4.0.0"
