@@ -36,7 +36,7 @@
     "svg-captcha": "^1.4.0",
     "ts-node": "^10.2.0",
     "typeorm": "^0.2.37",
-    "ws": "^8.1.0"
+    "ws": "^8.2.0"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.4",
