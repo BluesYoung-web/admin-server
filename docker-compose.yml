@@ -22,8 +22,6 @@ services:
         ipv4_address: 172.18.0.5
   node-server:
     image: node
-    # 外部：内部
-    ports: ['1443:1443', '9527:9527']
     volumes: 
       - /home/pi/node-server:/home/node
     restart: always
@@ -36,6 +34,7 @@ services:
     command: /bin/bash -c "cd /home/node && yarn && node main.js"
   nginx-server:
     image: nginx
+    # 外部：内部
     ports: ['8080:80']
     volumes:
       - /home/pi/www/.nginx/nginx.conf:/etc/nginx/nginx.conf

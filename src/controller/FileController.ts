@@ -1,7 +1,7 @@
 /*
  * @Author: zhangyang
  * @Date: 2021-07-13 14:51:30
- * @LastEditTime: 2021-08-01 16:27:50
+ * @LastEditTime: 2021-10-16 19:07:46
  * @Description: 处理文件上传
  */
 import { Context } from 'koa';
@@ -18,7 +18,7 @@ export class FileController {
     const urls: string[] = [];
     if (files) {
       for (const file of Object.values(files) as any[]) {
-        const prefix = '/upload';
+        const prefix = '/upload/admin';
         const p_split = process.platform === 'linux' ? '/' : '\\';
         const name = file.path.split(p_split).pop();
         urls.push(`${prefix}/${name}`);
